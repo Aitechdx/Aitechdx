@@ -107,27 +107,33 @@ user_problem_statement: "Build me an app that reminds old people to stand up aft
 backend:
   - task: "Health session tracking API"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Created comprehensive health reminder API with session tracking, daily progress, weekly stats, and user settings endpoints"
+      - working: true
+        agent: "testing"
+        comment: "Fixed MongoDB date serialization issue. All endpoints tested successfully: POST /api/sessions (create), GET /api/sessions/today, GET /api/sessions/progress, GET /api/sessions/weekly, POST /api/sessions/{id}/complete. Data persistence verified with multiple sessions. API handles elderly-friendly durations (45-60min sitting, 10-20min activity)."
 
   - task: "User settings management"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "medium"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Added user settings endpoints for customizing sitting/activity durations and notification preferences"
+      - working: true
+        agent: "testing"
+        comment: "Settings CRUD operations working perfectly. GET /api/settings and PUT /api/settings tested with elderly-specific configurations (45min sitting, 20min activity, 5 daily sessions). Partial updates and full updates both functional. Settings persist correctly across requests."
 
 frontend:
   - task: "Core timer functionality"
