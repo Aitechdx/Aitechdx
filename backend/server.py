@@ -151,7 +151,7 @@ async def complete_session(session_id: str):
     """Mark a session as completed"""
     result = await db.health_sessions.update_one(
         {"id": session_id},
-        {"$set": {"completed": True, "timestamp": datetime.utcnow()}}
+        {"$set": {"completed": True, "timestamp": datetime.utcnow().isoformat()}}
     )
     
     if result.modified_count == 0:
