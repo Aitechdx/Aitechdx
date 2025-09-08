@@ -75,7 +75,11 @@ async def create_session(session: HealthSessionCreate):
     session_dict['session_date'] = date.today()
     session_obj = HealthSession(**session_dict)
     
-    await db.health_sessions.insert_one(session_obj.dict())
+    # Convert date objects to strings for MongoDB storage
+    session_data = session_obj.dict()
+    session_data['session_date'] = session_data['session_date'].isoformat()
+    
+    await db.health_sessions.insert_one(session_data)
     return session_obj
 
 @api_router.get("/sessions/today", response_model=List[HealthSession])
