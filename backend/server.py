@@ -180,7 +180,7 @@ async def get_user_settings():
 async def update_user_settings(settings_update: UserSettingsUpdate):
     """Update user settings"""
     update_data = {k: v for k, v in settings_update.dict().items() if v is not None}
-    update_data["timestamp"] = datetime.utcnow()
+    update_data["timestamp"] = datetime.utcnow().isoformat()
     
     result = await db.user_settings.update_one(
         {"user_id": "default_user"},
@@ -190,7 +190,9 @@ async def update_user_settings(settings_update: UserSettingsUpdate):
     if result.matched_count == 0:
         # Create new settings if none exist
         new_settings = UserSettings(**update_data)
-        await db.user_settings.insert_one(new_settings.dict())
+        settings_data = new_settings.dict()
+        settings_data['timestamp'] = settings_data['timestamp'].isoformat()
+        await db.user_settings.insert_one(settings_data)
         return new_settings
     
     # Get updated settings
