@@ -169,7 +169,9 @@ async def get_user_settings():
     if not settings:
         # Create default settings
         default_settings = UserSettings()
-        await db.user_settings.insert_one(default_settings.dict())
+        settings_data = default_settings.dict()
+        settings_data['timestamp'] = settings_data['timestamp'].isoformat()
+        await db.user_settings.insert_one(settings_data)
         return default_settings
     
     return UserSettings(**settings)
